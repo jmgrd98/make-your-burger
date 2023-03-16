@@ -1,5 +1,5 @@
 <template>
-  <FormComponent/>
+  <FormComponent @newUser-submitted="submit"/>
 </template>
 
 <script>

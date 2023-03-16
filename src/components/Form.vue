@@ -3,11 +3,11 @@
     <input type="text" v-model="nome">
     <input type="text" v-model="role">
 
-    <button type="submit" v-on:click="submit">Submit</button>
+    <button type="submit">Submit</button>
   </form>
 
-  <p v-if="submit">{{ nome }}</p>
-  <p v-if="submit">{{ role }}</p>
+  <p v-if="submitted">{{ this.newUser.nome }}</p>
+  <p v-if="submitted">{{ this.newUser.role }}</p>
 </template>
 
 <script>
@@ -16,13 +16,20 @@
     data(){
       return{
         nome: '',
-        role: ''
+        role: '',
+        submitted: false
       }
     },
     methods: {
       submit: function () {
-        this.nome;
-        this.role;
+        let newUser = {
+          nome: this.nome,
+          role: this.role,
+        }
+
+        this.submitted = true;
+        this.nome = '';
+        this.role = '';
       }
     }
   }
