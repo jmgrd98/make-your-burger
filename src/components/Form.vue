@@ -1,6 +1,6 @@
 <template>
   <div class="main-container">
-    <h1>Componente de mensagem</h1>
+    <Message :msg="msg" v-show="msg"/>
 
     <form id="form" @submit.prevent="createBurger">
       <div class="input-container">
@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import Message from "@/components/Message";
+
 export default {
   name: 'Form',
   data() {
@@ -54,6 +56,9 @@ export default {
       message: '',
     }
   },
+  components: {
+    Message
+  },
   methods: {
     async getIngredients() {
       const req = await fetch("http://localhost:3000/ingredientes");
@@ -64,17 +69,6 @@ export default {
     },
     async createBurger(e) {
 
-      // const orderData = {
-      //   nome: this.nome,
-      //   carne: this.carne,
-      //   pao: this.pao,
-      //   opcionais: Array.from(this.opcionais),
-      //   status: "Solicitado",
-      //   message: this.message
-      // }
-      // console.log(orderData);
-      // const dataJson = JSON.stringify(orderData);
-      //
       const req = await fetch("http://localhost:3000/burgers", {
         method: "POST",
         headers: {
@@ -89,7 +83,15 @@ export default {
           message: this.message
         })
       });
+
       const data = await req.json();
+      this.msg = `Pedido Nº ${data.id} realizado com sucesso!`
+
+      this.nome = '';
+      this.carne = '';
+      this.pao = '';
+      this.opcionais = '';
+
       console.log(data);
     }
   },
