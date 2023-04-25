@@ -2,23 +2,21 @@
   <div class="main-container">
     <h1>Componente de mensagem</h1>
 
-    <form id="form">
+    <form id="form" @submit.prevent="getIngredients">
       <div class="input-container">
         <label for="nome">Nome:</label>
         <input type="text" name="nome" id="nome" v-model="nome" class="form-control" placeholder="Digite seu nome">
       </div>
       <div class="input-container">
         <label for="pao">Escolha o pão:</label>
-        <select name="pao" id="pao" v-model="pao" class="form-control" placeholder="Digite seu e-mail">
+        <select name="pao" id="pao" v-model="pao" class="form-control">
           <option value="">Selecione o seu pão</option>
-          <option value="integral">Integral</option>
-          <option value="integral">Integral</option>
-          <option value="integral">Integral</option>
+          <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
         </select>
       </div>
       <div class="input-container">
         <label for="carne">Escolha a carne:</label>
-        <select name="carne" id="carne" v-model="carne" class="form-control" placeholder="Digite seu e-mail">
+        <select name="carne" id="carne" v-model="carne" class="form-control">
           <option value="">Selecione a sua carne:</option>
           <option value="maminha">Maminha</option>
           <option value="carne">carne</option>
@@ -48,10 +46,30 @@ export default {
   name: 'Form',
   data() {
     return {
-      nome: '',
-      pao: '',
-      carne: ''
+      paes: null,
+      carnes: null,
+      opcionaisData: null,
+      nome: null,
+      pao: null,
+      carne: null,
+      opcionais: [],
+      status: "Solicitado",
+      message: null,
     }
+  },
+  methods: {
+    async getIngredients() {
+      const req = await fetch("http://localhost:3000/ingredientes");
+      const data = await req.json();
+      this.paes = data.paes;
+      this.carnes = data.carnes;
+      this.opcionaisData = data.opcionais;
+
+      console.log(data.paes);
+    },
+  },
+  mounted() {
+    this.getIngredients();
   }
 }
 </script>
