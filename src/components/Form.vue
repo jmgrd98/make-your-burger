@@ -85,7 +85,12 @@ export default {
       });
 
       const data = await req.json();
-      this.msg = `Pedido Nº ${data.id} realizado com sucesso!`
+      this.msg = `Pedido Nº ${data.id} realizado com sucesso!`;
+
+      setTimeout(() => {
+        this.msg = "";
+        console.log(this.msg);
+      }, 3000);
 
       this.nome = '';
       this.carne = '';
