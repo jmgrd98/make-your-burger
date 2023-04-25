@@ -18,16 +18,14 @@
         <label for="carne">Escolha a carne:</label>
         <select name="carne" id="carne" v-model="carne" class="form-control">
           <option value="">Selecione a sua carne:</option>
-          <option value="maminha">Maminha</option>
-          <option value="carne">carne</option>
-          <option value="carne">carne</option>
+          <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
         </select>
       </div>
       <div class="input-container opcionais-container">
         <label id="opcionais-label" for="opcionais">Selecione os opcionais:</label>
-          <div class="checbox-container">
+          <div v-for="opcional in opcionaisData" :key="opcional.id" :value="opcional.tipo" class="checbox-container">
             <input type="checkbox" name="opcionais" v-model="opcionais" value="salame"/>
-            <span>Salame</span>
+            <span>{{opcional.tipo}}</span>
           </div>
       </div>
       <div class="input-container">
@@ -64,8 +62,6 @@ export default {
       this.paes = data.paes;
       this.carnes = data.carnes;
       this.opcionaisData = data.opcionais;
-
-      console.log(data.paes);
     },
   },
   mounted() {
