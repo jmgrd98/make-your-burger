@@ -25,8 +25,9 @@
           <div id="status-container">
             <select name="" id="">
               <option value="">Selecione o status do burger:</option>
+              <option v-for="status in status" :key="status.id" :value="status.tipo" :selected="burger.status == status.tipo">{{status.tipo}}</option>
             </select>
-            <button class="delete-btn">Cancelar pedido</button>
+            <button class="delete-btn">Cancelar</button>
           </div>
         </div>
       </div>
@@ -50,10 +51,13 @@ export default {
       const data = await req.json();
       this.burgers = data;
 
-      this.burgers.forEach(burger => {
-        this.status.push(burger.status);
-      });
+      this.getStatus();
     },
+      async getStatus() {
+        const req = await fetch('http://localhost:3000/status');
+        const data = await req.json();
+        this.status = data;
+    }
   },
   mounted() {
     this.getPedidos();
@@ -107,9 +111,11 @@ select {
   padding: 12px 6px;
   margin-right: 12px;
   max-width: 50%;
+  height: 50px;
 }
 
 .delete-btn{
+  height: 50px;
   background-color: #222;
   color: #fcba03;
   font-weight: bold;
