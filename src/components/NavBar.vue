@@ -39,6 +39,5 @@
     width: 50px;
     height: 50px;
     margin-right: auto;
-    justify-self: flex-start;
   }
 </style>

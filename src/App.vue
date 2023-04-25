@@ -1,4 +1,4 @@
-<template>
+<template id="app">
   <NavBar :logo="logo_src" :alt="app_name"/>
   <router-view/>
   <Footer/>
@@ -29,25 +29,13 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  font-family: 'Franklin Gothic Medium', sans-serif;
 }
 
-nav {
-  padding: 30px;
-}
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-nav a.router-link-exact-active {
-  color: #42b983;
+.main-container{
+  margin: 50px;
+  min-height: 330px;
 }
 </style>
