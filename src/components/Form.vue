@@ -17,15 +17,19 @@
       return{
         nome: '',
         role: '',
-        submitted: false
+        submitted: false,
+        newUser: {
+          nome: '',
+          role: '',
+        }
       }
     },
     methods: {
       submit: function () {
-        let newUser = {
-          nome: this.nome,
-          role: this.role,
-        }
+        // let newUser = {
+        //   nome: this.nome,
+        //   role: this.role,
+        // }
 
         this.submitted = true;
         this.nome = '';
