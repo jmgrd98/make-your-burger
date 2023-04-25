@@ -1,4 +1,5 @@
 <template>
+  <Message :msg="msg" v-show="msg"/>
   <div id="burger-table">
     <div>
       <div id="burger-table-heading">
@@ -36,6 +37,7 @@
 </template>
 
 <script>
+import Message from "@/components/Message";
 export default {
   name: 'Dashboard',
   data() {
@@ -44,6 +46,9 @@ export default {
       burger_id: null,
       status: []
     }
+  },
+  components: {
+    Message
   },
   methods: {
     async getPedidos() {
@@ -64,6 +69,8 @@ export default {
       });
       const data = await req.json();
       this.burgers = data;
+
+      this.msg = 'Pedido cancelado com sucesso!';
 
       this.getPedidos();
     },
