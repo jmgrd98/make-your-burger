@@ -30,6 +30,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: 'Franklin Gothic Medium', sans-serif;
+  list-style: none;
 }
 
 
