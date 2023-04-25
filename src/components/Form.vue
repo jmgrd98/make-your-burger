@@ -54,6 +54,7 @@ export default {
       carne: null,
       opcionais: [],
       message: '',
+      status: "Solicitado"
     }
   },
   components: {
