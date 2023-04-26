@@ -70,7 +70,7 @@ export default {
       const data = await req.json();
       this.burgers = data;
 
-      this.msg = 'Pedido cancelado com sucesso!';
+      this.msg = `O pedido nº ${id} foi cancelado com sucesso!`;
 
       this.getPedidos();
     },
@@ -85,6 +85,7 @@ export default {
         body: dataJson
       });
       const data = await req.json();
+      this.msg = `O pedido nº ${data.id} foi atualizado para ${data.status}!`;
       console.log(data);
     }
   },
