@@ -77,15 +77,5 @@
       "tipo": "Finalizado"
     }
   ],
-  "burgers": [
-    {
-      "nome": "Joao Marcelo Guerra Ribeiro Dantas",
-      "pao": "3 Queijos",
-      "carne": "Alcatra",
-      "opcionais": [],
-      "status": "Em produção",
-      "message": "",
-      "id": 1
-    }
-  ]
+  "burgers": []
 }
