@@ -11,19 +11,19 @@
         <label for="pao">Escolha o pão:</label>
         <select name="pao" id="pao" v-model="pao" class="form-control">
           <option value="">Selecione o seu pão</option>
-          <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
+          <option v-for="pao in api.ingredientes.paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
         </select>
       </div>
       <div class="input-container">
         <label for="carne">Escolha a carne:</label>
         <select name="carne" id="carne" v-model="carne" class="form-control">
           <option value="">Selecione a sua carne:</option>
-          <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
+          <option v-for="carne in api.ingredientes.carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
         </select>
       </div>
       <div class="input-container opcionais-container">
         <label id="opcionais-label" for="opcionais">Selecione os opcionais:</label>
-          <div v-for="opcional in opcionaisData" :key="opcional.id"  class="checbox-container">
+          <div v-for="opcional in api.ingredientes.opcionais" :key="opcional.id"  class="checbox-container">
             <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo"/>
             <span>{{opcional.tipo}}</span>
           </div>

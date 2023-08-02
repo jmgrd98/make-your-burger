@@ -77,5 +77,27 @@
       "tipo": "Finalizado"
     }
   ],
-  "burgers": []
+  "burgers": [
+    {
+      "nome": null,
+      "pao": null,
+      "carne": null,
+      "opcionais": [],
+      "status": "Solicitado",
+      "message": "",
+      "id": 1
+    },
+    {
+      "nome": "João Marcelo Guerra Ribeiro Dantas",
+      "pao": "Italiano Branco",
+      "carne": "Alcatra",
+      "opcionais": [
+        "Bacon",
+        "Cheddar"
+      ],
+      "status": "Solicitado",
+      "message": "oi",
+      "id": 2
+    }
+  ]
 }
