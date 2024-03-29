@@ -8,11 +8,10 @@
         <div>Pão:</div>
         <div>Carne:</div>
         <div>Opcionais:</div>
-<!--        <div>Mensagem:</div>-->
         <div>Ações:</div>
       </div>
       <div id="burger-table-rows">
-        <div class="burger-table-row" v-for="burger in burgers" :key="burger.id">
+        <div class="burger-table-row" v-for="burger in api.burgers" :key="burger.id">
           <div class="order-number">{{burger.id}}</div>
           <div>{{ burger.nome }}</div>
           <div>{{burger.pao}}</div>
@@ -22,11 +21,10 @@
               <li v-for="(opcional, index) in burger.opcionais" :key="index">{{opcional}}</li>
             </ul>
           </div>
-<!--          <div>Mensagem</div>-->
           <div id="status-container">
             <select name="status" class="status"  @change="updateBurger($event, burger.id)">
               <option value="">Selecione o status do burger:</option>
-              <option v-for="s in status" :key="s.id" :value="s.tipo" :selected="burger.status == s.tipo">{{s.tipo}}</option>
+              <option v-for="s in api.status" :key="s.id" :value="s.tipo" :selected="burger.status == s.tipo">{{s.tipo}}</option>
             </select>
             <button class="delete-btn" @click="deleteBurger(burger.id)">Cancelar</button>
           </div>
@@ -42,37 +40,32 @@ export default {
   name: 'Dashboard',
   data() {
     return {
-      burgers: null,
-      burger_id: null,
-      status: []
+      msg: '',
+      api: {
+        ingredientes: {
+          paes: [],
+          carnes: [],
+          opcionais: []
+        },
+        status: [],
+        burgers: []
+      }
     }
   },
   components: {
     Message
   },
   methods: {
-    async getPedidos() {
-      const req = await fetch('http://localhost:3000/burgers');
-      const data = await req.json();
-      this.burgers = data;
-
-      this.getStatus();
-    },
-      async getStatus() {
-        const req = await fetch('http://localhost:3000/status');
-        const data = await req.json();
-        this.status = data;
-    },
     async deleteBurger(id) {
       const req = await fetch(`http://localhost:3000/burgers/${id}`, {
         method: 'DELETE'
       });
-      const data = await req.json();
-      this.burgers = data;
-
-      this.msg = `O pedido nº ${id} foi cancelado com sucesso!`;
-
-      this.getPedidos();
+      if (req.ok) {
+        this.msg = `O pedido nº ${id} foi cancelado com sucesso!`;
+        this.getPedidos();
+      } else {
+        console.error(`Failed to cancel order ${id}`);
+      }
     },
     async updateBurger(event, id) {
       const option = event.target.value;
@@ -84,107 +77,32 @@ export default {
         },
         body: dataJson
       });
-      const data = await req.json();
-      this.msg = `O pedido nº ${data.id} foi atualizado para ${data.status}!`;
-      console.log(data);
+      if (req.ok) {
+        const data = await req.json();
+        this.msg = `O pedido nº ${data.id} foi atualizado para ${data.status}!`;
+      } else {
+        console.error(`Failed to update order ${id}`);
+      }
+    },
+    async getPedidos() {
+      const reqBurgers = await fetch('http://localhost:3000/burgers');
+      const reqStatus = await fetch('http://localhost:3000/status');
+      if (reqBurgers.ok && reqStatus.ok) {
+        const dataBurgers = await reqBurgers.json();
+        const dataStatus = await reqStatus.json();
+        this.api.burgers = dataBurgers;
+        this.api.status = dataStatus;
+      } else {
+        console.error('Failed to fetch orders or status');
+      }
     }
   },
   mounted() {
     this.getPedidos();
-  },
-  api: {
-    "ingredientes": {
-      "paes": [
-        {
-          "id": 1,
-          "tipo": "Italiano Branco"
-        },
-        {
-          "id": 2,
-          "tipo": "3 Queijos"
-        },
-        {
-          "id": 3,
-          "tipo": "Parmesão e Orégano"
-        },
-        {
-          "id": 4,
-          "tipo": "Integral"
-        }
-      ],
-      "carnes": [
-        {
-          "id": 1,
-          "tipo": "Maminha"
-        },
-        {
-          "id": 2,
-          "tipo": "Alcatra"
-        },
-        {
-          "id": 3,
-          "tipo": "Picanha"
-        },
-        {
-          "id": 4,
-          "tipo": "Veggie burger"
-        }
-      ],
-      "opcionais": [
-        {
-          "id": 1,
-          "tipo": "Bacon"
-        },
-        {
-          "id": 2,
-          "tipo": "Cheddar"
-        },
-        {
-          "id": 3,
-          "tipo": "Salame"
-        },
-        {
-          "id": 4,
-          "tipo": "Tomate"
-        },
-        {
-          "id": 4,
-          "tipo": "Cebola roxa"
-        },
-        {
-          "id": 4,
-          "tipo": "Pepino"
-        }
-      ]
-    },
-    "status": [
-      {
-        "id": 1,
-        "tipo": "Solicitado"
-      },
-      {
-        "id": 2,
-        "tipo": "Em produção"
-      },
-      {
-        "id": 3,
-        "tipo": "Finalizado"
-      }
-    ],
-    "burgers": [
-      {
-        "nome": "Joao Marcelo Guerra Ribeiro Dantas",
-        "pao": "3 Queijos",
-        "carne": "Alcatra",
-        "opcionais": [],
-        "status": "Em produção",
-        "message": "",
-        "id": 1
-      }
-    ]
   }
 }
 </script>
+
 
 <style scoped>
 

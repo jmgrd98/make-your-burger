@@ -11,22 +11,22 @@
         <label for="pao">Escolha o pão:</label>
         <select name="pao" id="pao" v-model="pao" class="form-control">
           <option value="">Selecione o seu pão</option>
-          <option v-for="pao in api.ingredientes.paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
+          <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">{{pao.tipo}}</option>
         </select>
       </div>
       <div class="input-container">
         <label for="carne">Escolha a carne:</label>
         <select name="carne" id="carne" v-model="carne" class="form-control">
           <option value="">Selecione a sua carne:</option>
-          <option v-for="carne in api.ingredientes.carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
+          <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{carne.tipo}}</option>
         </select>
       </div>
       <div class="input-container opcionais-container">
         <label id="opcionais-label" for="opcionais">Selecione os opcionais:</label>
-          <div v-for="opcional in api.ingredientes.opcionais" :key="opcional.id"  class="checbox-container">
-            <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo"/>
-            <span>{{opcional.tipo}}</span>
-          </div>
+        <div v-for="opcional in opcionaisData" :key="opcional.id" class="checkbox-container">
+          <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo"/>
+          <span>{{opcional.tipo}}</span>
+        </div>
       </div>
       <div class="input-container">
         <label for="message">Mensagem:</label>
@@ -46,106 +46,15 @@ export default {
   name: 'Form',
   data() {
     return {
-      paes: null,
-      carnes: null,
-      opcionaisData: null,
-      nome: null,
-      pao: null,
-      carne: null,
+      paes: [],
+      carnes: [],
+      opcionaisData: [],
+      nome: '',
+      pao: '',
+      carne: '',
       opcionais: [],
       message: '',
       status: "Solicitado",
-      api: {
-        "ingredientes": {
-          "paes": [
-            {
-              "id": 1,
-              "tipo": "Italiano Branco"
-            },
-            {
-              "id": 2,
-              "tipo": "3 Queijos"
-            },
-            {
-              "id": 3,
-              "tipo": "Parmesão e Orégano"
-            },
-            {
-              "id": 4,
-              "tipo": "Integral"
-            }
-          ],
-          "carnes": [
-            {
-              "id": 1,
-              "tipo": "Maminha"
-            },
-            {
-              "id": 2,
-              "tipo": "Alcatra"
-            },
-            {
-              "id": 3,
-              "tipo": "Picanha"
-            },
-            {
-              "id": 4,
-              "tipo": "Veggie burger"
-            }
-          ],
-          "opcionais": [
-            {
-              "id": 1,
-              "tipo": "Bacon"
-            },
-            {
-              "id": 2,
-              "tipo": "Cheddar"
-            },
-            {
-              "id": 3,
-              "tipo": "Salame"
-            },
-            {
-              "id": 4,
-              "tipo": "Tomate"
-            },
-            {
-              "id": 4,
-              "tipo": "Cebola roxa"
-            },
-            {
-              "id": 4,
-              "tipo": "Pepino"
-            }
-          ]
-        },
-        "status": [
-          {
-            "id": 1,
-            "tipo": "Solicitado"
-          },
-          {
-            "id": 2,
-            "tipo": "Em produção"
-          },
-          {
-            "id": 3,
-            "tipo": "Finalizado"
-          }
-        ],
-        "burgers": [
-          {
-            "nome": "Joao Marcelo Guerra Ribeiro Dantas",
-            "pao": "3 Queijos",
-            "carne": "Alcatra",
-            "opcionais": [],
-            "status": "Em produção",
-            "message": "",
-            "id": 1
-          }
-        ]
-      }
     }
   },
   components: {
@@ -153,15 +62,21 @@ export default {
   },
   methods: {
     async getIngredients() {
-      const req = await fetch("http://localhost:3000/ingredientes");
-      const data = await req.json();
-      this.paes = data.paes;
-      this.carnes = data.carnes;
-      this.opcionaisData = data.opcionais;
+      try {
+        const paesResponse = await fetch("http://localhost:3000/ingredientes/paes");
+        const carnesResponse = await fetch("http://localhost:3000/ingredientes/carnes");
+        const opcionaisResponse = await fetch("http://localhost:3000/ingredientes/opcionais");
+        
+        this.paes = await paesResponse.json();
+        this.carnes = await carnesResponse.json();
+        this.opcionaisData = await opcionaisResponse.json();
+      } catch (error) {
+        console.error('Error fetching ingredients:', error);
+      }
     },
-    async createBurger(e) {
-
-      const req = await fetch("http://localhost:3000/burgers", {
+    async createBurger() {
+    try {
+      const response = await fetch("http://localhost:3000/burgers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -176,21 +91,25 @@ export default {
         })
       });
 
-      const data = await req.json();
+      if (!response.ok) {
+        throw new Error('Failed to create burger');
+      }
+
+      const data = await response.json();
       this.msg = `Pedido nº ${data.id} realizado com sucesso!`;
 
       setTimeout(() => {
         this.msg = "";
-        console.log(this.msg);
       }, 3000);
 
       this.nome = '';
       this.carne = '';
       this.pao = '';
       this.opcionais = '';
-
-      console.log(data);
+    } catch (error) {
+      console.error('Error creating burger:', error);
     }
+  }
   },
   mounted() {
     this.getIngredients();
