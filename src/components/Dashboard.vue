@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async deleteBurger(id) {
-      const req = await fetch(`http://localhost:3000/burgers/${id}`, {
+      const req = await fetch(`https://make-your-burger-server.onrender.com/burgers/${id}`, {
         method: 'DELETE'
       });
       if (req.ok) {
@@ -70,7 +70,7 @@ export default {
     async updateBurger(event, id) {
       const option = event.target.value;
       const dataJson = JSON.stringify({status: option})
-      const req = await fetch(`http://localhost:3000/burgers/${id}`, {
+      const req = await fetch(`https://make-your-burger-server.onrender.com/burgers/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -85,8 +85,8 @@ export default {
       }
     },
     async getPedidos() {
-      const reqBurgers = await fetch('http://localhost:3000/burgers');
-      const reqStatus = await fetch('http://localhost:3000/status');
+      const reqBurgers = await fetch('https://make-your-burger-server.onrender.com/burgers');
+      const reqStatus = await fetch('https://make-your-burger-server.onrender.com/status');
       if (reqBurgers.ok && reqStatus.ok) {
         const dataBurgers = await reqBurgers.json();
         const dataStatus = await reqStatus.json();

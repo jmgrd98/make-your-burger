@@ -63,9 +63,9 @@ export default {
   methods: {
     async getIngredients() {
       try {
-        const paesResponse = await fetch("http://localhost:3000/ingredientes/paes");
-        const carnesResponse = await fetch("http://localhost:3000/ingredientes/carnes");
-        const opcionaisResponse = await fetch("http://localhost:3000/ingredientes/opcionais");
+        const paesResponse = await fetch("https://make-your-burger-server.onrender.com/ingredientes/paes");
+        const carnesResponse = await fetch("https://make-your-burger-server.onrender.com/ingredientes/carnes");
+        const opcionaisResponse = await fetch("https://make-your-burger-server.onrender.com/ingredientes/opcionais");
         
         this.paes = await paesResponse.json();
         this.carnes = await carnesResponse.json();
@@ -76,7 +76,7 @@ export default {
     },
     async createBurger() {
     try {
-      const response = await fetch("http://localhost:3000/burgers", {
+      const response = await fetch("https://make-your-burger-server.onrender.com/burgers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
